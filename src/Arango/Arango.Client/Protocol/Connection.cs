@@ -102,8 +102,7 @@ namespace Arango.Client.Protocol
             }
             catch (WebException webException)
             {
-                if ((webException.Status == WebExceptionStatus.ProtocolError) && 
-                    (webException.Response != null))
+                if ((webException.Status == WebExceptionStatus.ProtocolError) && (webException.Response != null))
                 {
                     using (var exceptionHttpResponse = (HttpWebResponse)webException.Response)
                     {

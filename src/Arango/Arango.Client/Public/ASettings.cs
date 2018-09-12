@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Text.RegularExpressions;
+﻿using Arango.Client.Protocol;
 using Arango.fastJSON;
-using Arango.Client.Protocol;
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace Arango.Client
 {
@@ -10,15 +10,15 @@ namespace Arango.Client
     /// </summary>
     public static class ASettings
     {
-        static readonly Dictionary<string, Connection> _connections = new Dictionary<string, Connection>();
-        
-        internal readonly static Regex KeyRegex = new Regex(@"^[a-zA-Z0-9_\-:.@()+,=;$!*'%]*$");
-        
+        private static readonly Dictionary<string, Connection> _Connections = new Dictionary<string, Connection>();
+
+        internal static readonly Regex KeyRegex = new Regex(@"^[a-zA-Z0-9_\-:.@()+,=;$!*'%]*$");
+
         /// <summary>
         /// Determines driver name.
         /// </summary>
         public const string DriverName = "ArangoDB-NET";
-        
+
         /// <summary>
         /// Determines driver version.
         /// </summary>
@@ -28,7 +28,7 @@ namespace Arango.Client
         /// Determines JSON serialization options. Default value is { UseEscapedUnicode = false, UseFastGuid = false, UseExtensions = false }.
         /// </summary>
         public static JSONParameters JsonParameters { get; set; }
-        
+
         /// <summary>
         /// Determines whether HTTP requests which return status code indicating an error (e.g. 4xx or 5xx) should also throw exceptions and not only contain error data within result object. Default value is false.
         /// </summary>
@@ -39,9 +39,9 @@ namespace Arango.Client
             JsonParameters = new JSONParameters { UseEscapedUnicode = false, UseFastGuid = false, UseExtensions = false };
             ThrowExceptions = false;
         }
-        
+
         #region AddConnection
-        
+
         public static void AddConnection(string alias, string endpoint, bool useWebProxy = false)
         {
             AddConnection(alias, endpoint, "", "", useWebProxy);
@@ -51,43 +51,43 @@ namespace Arango.Client
         {
             var connection = new Connection(alias, endpoint, username, password, useWebProxy);
 
-            _connections.Add(alias, connection);
+            _Connections.Add(alias, connection);
         }
-        
+
         public static void AddConnection(string alias, string endpoint, string databaseName, bool useWebProxy = false)
         {
             AddConnection(alias, endpoint, databaseName, "", "", useWebProxy);
         }
-        
+
         public static void AddConnection(string alias, string endpoint, string databaseName, string username, string password, bool useWebProxy = false)
         {
             var connection = new Connection(alias, endpoint, databaseName, username, password, useWebProxy);
 
-            _connections.Add(alias, connection);
+            _Connections.Add(alias, connection);
         }
-        
+
         #endregion
 
         public static void RemoveConnection(string alias)
         {
-            if (_connections.ContainsKey(alias))
+            if (_Connections.ContainsKey(alias))
             {
-                _connections.Remove(alias);
+                _Connections.Remove(alias);
             }
         }
-        
+
         public static bool HasConnection(string alias)
         {
-        	return _connections.ContainsKey(alias);
+            return _Connections.ContainsKey(alias);
         }
 
         internal static Connection GetConnection(string alias)
         {
-            if (_connections.ContainsKey(alias))
+            if (_Connections.ContainsKey(alias))
             {
-                return _connections[alias];
+                return _Connections[alias];
             }
-                
+
             return null;
         }
     }
