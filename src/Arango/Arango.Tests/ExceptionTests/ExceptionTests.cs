@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Arango.Client;
 using NUnit.Framework;
-using Arango.Client;
+using System;
 
 namespace Arango.Tests.ExceptionTests
 {
@@ -14,7 +14,8 @@ namespace Arango.Tests.ExceptionTests
             ASettings.ThrowExceptions = true;
 
             // when
-            var arangoException = Assert.Throws<AException>(() => {
+            var arangoException = Assert.Throws<AException>(() =>
+            {
                 var db = new ADatabase(Database.SystemAlias);
                 var resultCreate = db.Create("*/-+");
             });
@@ -22,7 +23,7 @@ namespace Arango.Tests.ExceptionTests
             // then
             Assert.IsNotNull(arangoException);
             Assert.AreEqual(400, arangoException.StatusCode);
-            Assert.IsNotNullOrEmpty(arangoException.Message);
+            Assert.That(arangoException.Message, Is.Not.Null.And.Not.Empty);
         }
 
         public void Dispose()
