@@ -83,6 +83,12 @@ namespace Arango.fastJSON
                 double d = (double)obj;
                 if (double.IsNaN(d))
                     _output.Append("\"NaN\"");
+                else if (double.IsInfinity(d))
+                {
+                    _output.Append("\"");
+                    _output.Append(((IConvertible)obj).ToString(NumberFormatInfo.InvariantInfo));
+                    _output.Append("\"");
+                }
                 else
                     _output.Append(((IConvertible)obj).ToString(NumberFormatInfo.InvariantInfo));
             }
@@ -91,6 +97,12 @@ namespace Arango.fastJSON
                 float d = (float)obj;
                 if (float.IsNaN(d))
                     _output.Append("\"NaN\"");
+                else if (float.IsInfinity(d))
+                {
+                    _output.Append("\"");
+                    _output.Append(((IConvertible)obj).ToString(NumberFormatInfo.InvariantInfo));
+                    _output.Append("\"");
+                }
                 else
                     _output.Append(((IConvertible)obj).ToString(NumberFormatInfo.InvariantInfo));
             }
@@ -104,7 +116,7 @@ namespace Arango.fastJSON
             else if (obj is TimeSpan)
                 _output.Append(((TimeSpan)obj).Ticks);
 
-#if net4
+#if NET4
             else if (_params.KVStyleStringDictionary == false &&
                 obj is IEnumerable<KeyValuePair<string, object>>)
 
@@ -112,7 +124,7 @@ namespace Arango.fastJSON
 #endif
 
             else if (_params.KVStyleStringDictionary == false && obj is IDictionary &&
-                obj.GetType().IsGenericType && obj.GetType().GetGenericArguments()[0] == typeof(string))
+                obj.GetType().IsGenericType && Reflection.Instance.GetGenericArguments(obj.GetType())[0] == typeof(string))
 
                 WriteStringDictionary((IDictionary)obj);
             else if (obj is IDictionary)
@@ -149,7 +161,7 @@ namespace Arango.fastJSON
         private void WriteDateTimeOffset(DateTimeOffset d)
         {
             DateTime dt = _params.UseUTCDateTime ? d.UtcDateTime : d.DateTime;
-
+            
             write_date_value(dt);
 
             var ticks = dt.Ticks % TimeSpan.TicksPerSecond;
@@ -187,7 +199,7 @@ namespace Arango.fastJSON
                 {
                     if (pendingSeparator) _output.Append(',');
                     if (_params.SerializeToLowerCaseNames)
-                        WritePair(key.ToLower(), nameValueCollection[key]);
+                        WritePair(key.ToLowerInvariant(), nameValueCollection[key]);
                     else
                         WritePair(key, nameValueCollection[key]);
                     pendingSeparator = true;
@@ -213,7 +225,7 @@ namespace Arango.fastJSON
 
                     string k = (string)entry.Key;
                     if (_params.SerializeToLowerCaseNames)
-                        WritePair(k.ToLower(), entry.Value);
+                        WritePair(k.ToLowerInvariant(), entry.Value);
                     else
                         WritePair(k, entry.Value);
                     pendingSeparator = true;
@@ -224,7 +236,7 @@ namespace Arango.fastJSON
 
         private void WriteCustom(object obj)
         {
-            Serialize s;
+            Reflection.Serialize s;
             Reflection.Instance._customSerializer.TryGetValue(obj.GetType(), out s);
             WriteStringFast(s(obj));
         }
@@ -475,7 +487,9 @@ namespace Arango.fastJSON
                 {
                     if (append)
                         _output.Append(',');
-                    if (_params.SerializeToLowerCaseNames)
+                    if (p.memberName != null)
+                        WritePair(p.memberName, o);
+                    else if (_params.SerializeToLowerCaseNames)
                         WritePair(p.lcName, o);
                     else
                         WritePair(p.Name, o);
@@ -549,7 +563,7 @@ namespace Arango.fastJSON
 
                     string k = (string)entry.Key;
                     if (_params.SerializeToLowerCaseNames)
-                        WritePair(k.ToLower(), entry.Value);
+                        WritePair(k.ToLowerInvariant(), entry.Value);
                     else
                         WritePair(k, entry.Value);
                     pendingSeparator = true;
@@ -573,7 +587,7 @@ namespace Arango.fastJSON
                     string k = entry.Key;
 
                     if (_params.SerializeToLowerCaseNames)
-                        WritePair(k.ToLower(), entry.Value);
+                        WritePair(k.ToLowerInvariant(), entry.Value);
                     else
                         WritePair(k, entry.Value);
                     pendingSeparator = true;
@@ -631,7 +645,7 @@ namespace Arango.fastJSON
                 }
                 else
                 {
-                    if (c != '\t' && c != '\n' && c != '\r' && c != '\"' && c != '\\')// && c != ':' && c!=',')
+                    if (c != '\t' && c != '\n' && c != '\r' && c != '\"' && c != '\\' && c!='\0')// && c != ':' && c!=',')
                     {
                         if (runIndex == -1)
                             runIndex = index;
@@ -653,6 +667,7 @@ namespace Arango.fastJSON
                     case '\n': _output.Append("\\n"); break;
                     case '"':
                     case '\\': _output.Append('\\'); _output.Append(c); break;
+                    case '\0': _output.Append("\\u0000"); break;
                     default:
                         if (_useEscapedUnicode)
                         {
