@@ -10,7 +10,7 @@ namespace Arango.Client
     public static partial class DictionaryExtensions
     {
         #region Field getters
-        
+
         /// <summary>
         /// Retrieves bool type value from specified field path.
         /// </summary>
@@ -91,7 +91,7 @@ namespace Arango.Client
         {
             var fieldValue = GetFieldValue(dictionary, fieldPath);
             DateTime dateTime;
-            
+
             if (fieldValue is DateTime)
             {
                 dateTime = (DateTime)fieldValue;
@@ -108,7 +108,7 @@ namespace Arango.Client
             {
                 dateTime = Convert.ToDateTime(GetFieldValue(dictionary, fieldPath));
             }
-            
+
             return dateTime;
         }
         /// <summary>
@@ -120,12 +120,12 @@ namespace Arango.Client
         public static Guid Guid(this Dictionary<string, object> dictionary, string fieldPath)
         {
             var fieldValue = GetFieldValue(dictionary, fieldPath);
-            
+
             if (!(fieldValue is Guid))
             {
                 throw new InvalidFieldTypeException(string.Format("Field path '{0}' value does not contain Guid type.", fieldPath));
             }
-            
+
             return (Guid)fieldValue;
         }
         /// <summary>
@@ -164,12 +164,12 @@ namespace Arango.Client
         public static Dictionary<string, object> Document(this Dictionary<string, object> dictionary, string fieldPath)
         {
             var fieldValue = GetFieldValue(dictionary, fieldPath);
-            
+
             if (!(fieldValue is Dictionary<string, object>))
             {
                 throw new InvalidFieldTypeException(string.Format("Field path '{0}' value does not contain Dictionary<string, object> type.", fieldPath));
             }
-            
+
             return (Dictionary<string, object>)fieldValue;
         }
         /// <summary>
@@ -183,7 +183,7 @@ namespace Arango.Client
             var type = typeof(T);
             var fieldValue = GetFieldValue(dictionary, fieldPath);
             T fieldEnum;
-            
+
             if (fieldValue is Enum)
             {
                 fieldEnum = (T)fieldValue;
@@ -203,7 +203,7 @@ namespace Arango.Client
             {
                 throw new InvalidFieldTypeException(string.Format("Field path '{0}' value does not contain Enum type.", fieldPath));
             }
-            
+
             return fieldEnum;
         }
         /// <summary>
@@ -216,15 +216,15 @@ namespace Arango.Client
         {
             var type = typeof(T);
             var fieldValue = GetFieldValue(dictionary, fieldPath);
-            
+
             if (!(fieldValue.GetType().IsGenericType && (fieldValue is IEnumerable)))
             {
                 throw new InvalidFieldTypeException(string.Format("Field path '{0}' value does not contain list type.", fieldPath));
             }
-            
+
             var collection = (IList)fieldValue;
             var collectionElementType = collection.GetType().GetGenericArguments()[0];
-            
+
             if (collectionElementType == type)
             {
                 return collection.Cast<T>().ToList();
@@ -233,12 +233,12 @@ namespace Arango.Client
             else
             {
                 var returnCollection = new List<T>();
-                
+
                 for (int i = 0; i < collection.Count; i++)
                 {
                     returnCollection.Add((T)Convert.ChangeType(collection[i], type));
                 }
-                
+
                 return returnCollection;
             }
         }
@@ -252,15 +252,15 @@ namespace Arango.Client
         {
             var type = typeof(T);
             var fieldValue = GetFieldValue(dictionary, fieldPath);
-            
+
             if (!(fieldValue is IEnumerable))
             {
                 throw new InvalidFieldTypeException(string.Format("Field path '{0}' value does not contain array type.", fieldPath));
             }
-            
+
             var collection = (IList)fieldValue;
             var collectionElementType = collection.GetType().GetElementType();
-            
+
             if (collectionElementType == type)
             {
                 return collection.Cast<T>().ToArray();
@@ -269,12 +269,12 @@ namespace Arango.Client
             else
             {
                 var returnCollection = Activator.CreateInstance(typeof(T[]), collection.Count);
-                
+
                 for (int i = 0; i < collection.Count; i++)
                 {
                     ((T[])returnCollection)[i] = (T)Convert.ChangeType(collection[i], type);
                 }
-                
+
                 return (T[])returnCollection;
             }
         }
@@ -287,26 +287,26 @@ namespace Arango.Client
         public static int Size(this Dictionary<string, object> dictionary, string fieldPath)
         {
             var fieldValue = GetFieldValue(dictionary, fieldPath);
-            
+
             if (!(fieldValue is IList))
             {
                 throw new InvalidFieldTypeException(string.Format("Field path '{0}' value does not contain type which can retrieve items count.", fieldPath));
             }
-            
+
             return ((IList)fieldValue).Count;
         }
-        
+
         #endregion
-        
+
         #region Field setters
-        
+
         /// <summary>
         /// Stores bool type value to specified field path.
         /// </summary>
         public static Dictionary<string, object> Bool(this Dictionary<string, object> dictionary, string fieldPath, bool fieldValue)
         {
             SetFieldValue(dictionary, fieldPath, fieldValue);
-            
+
             return dictionary;
         }
         /// <summary>
@@ -315,7 +315,7 @@ namespace Arango.Client
         public static Dictionary<string, object> Byte(this Dictionary<string, object> dictionary, string fieldPath, byte fieldValue)
         {
             SetFieldValue(dictionary, fieldPath, fieldValue);
-            
+
             return dictionary;
         }
         /// <summary>
@@ -324,7 +324,7 @@ namespace Arango.Client
         public static Dictionary<string, object> Short(this Dictionary<string, object> dictionary, string fieldPath, short fieldValue)
         {
             SetFieldValue(dictionary, fieldPath, fieldValue);
-            
+
             return dictionary;
         }
         /// <summary>
@@ -333,7 +333,7 @@ namespace Arango.Client
         public static Dictionary<string, object> Int(this Dictionary<string, object> dictionary, string fieldPath, int fieldValue)
         {
             SetFieldValue(dictionary, fieldPath, fieldValue);
-            
+
             return dictionary;
         }
         /// <summary>
@@ -342,7 +342,7 @@ namespace Arango.Client
         public static Dictionary<string, object> Long(this Dictionary<string, object> dictionary, string fieldPath, long fieldValue)
         {
             SetFieldValue(dictionary, fieldPath, fieldValue);
-            
+
             return dictionary;
         }
         /// <summary>
@@ -351,7 +351,7 @@ namespace Arango.Client
         public static Dictionary<string, object> Float(this Dictionary<string, object> dictionary, string fieldPath, float fieldValue)
         {
             SetFieldValue(dictionary, fieldPath, fieldValue);
-            
+
             return dictionary;
         }
         /// <summary>
@@ -360,7 +360,7 @@ namespace Arango.Client
         public static Dictionary<string, object> Double(this Dictionary<string, object> dictionary, string fieldPath, double fieldValue)
         {
             SetFieldValue(dictionary, fieldPath, fieldValue);
-            
+
             return dictionary;
         }
         /// <summary>
@@ -369,12 +369,12 @@ namespace Arango.Client
         public static Dictionary<string, object> Decimal(this Dictionary<string, object> dictionary, string fieldPath, decimal fieldValue)
         {
             SetFieldValue(dictionary, fieldPath, fieldValue);
-            
+
             return dictionary;
         }
 
         #region DateTime
-        
+
         /// <summary>
         /// Stores DateTime type to specified field path with value in format specified in global settings DateTimeFormat.
         /// </summary>
@@ -388,7 +388,7 @@ namespace Arango.Client
         public static Dictionary<string, object> DateTime(this Dictionary<string, object> dictionary, string fieldPath, DateTime fieldValue, string dateTimeStringFormat)
         {
             SetFieldValue(dictionary, fieldPath, fieldValue.ToUniversalTime().ToString(dateTimeStringFormat, DateTimeFormatInfo.InvariantInfo));
-            
+
             return dictionary;
         }
         /// <summary>
@@ -409,19 +409,19 @@ namespace Arango.Client
                     SetFieldValue(dictionary, fieldPath, fieldValue);
                     break;
             }
-            
+
             return dictionary;
         }
-        
+
         #endregion
-        
+
         /// <summary>
         /// Stores Guid type value to specified field path.
         /// </summary>
         public static Dictionary<string, object> Guid(this Dictionary<string, object> dictionary, string fieldPath, Guid fieldValue)
         {
             SetFieldValue(dictionary, fieldPath, fieldValue);
-            
+
             return dictionary;
         }
         /// <summary>
@@ -430,7 +430,7 @@ namespace Arango.Client
         public static Dictionary<string, object> String(this Dictionary<string, object> dictionary, string fieldPath, string fieldValue)
         {
             SetFieldValue(dictionary, fieldPath, fieldValue);
-            
+
             return dictionary;
         }
         /// <summary>
@@ -439,7 +439,7 @@ namespace Arango.Client
         public static Dictionary<string, object> Object(this Dictionary<string, object> dictionary, string fieldPath, object fieldValue)
         {
             SetFieldValue(dictionary, fieldPath, fieldValue);
-            
+
             return dictionary;
         }
         /// <summary>
@@ -448,7 +448,7 @@ namespace Arango.Client
         public static Dictionary<string, object> Object<T>(this Dictionary<string, object> dictionary, string fieldPath, T fieldValue)
         {
             SetFieldValue(dictionary, fieldPath, fieldValue);
-            
+
             return dictionary;
         }
         /// <summary>
@@ -457,7 +457,7 @@ namespace Arango.Client
         public static Dictionary<string, object> Document(this Dictionary<string, object> dictionary, string fieldPath, Dictionary<string, object> fieldValue)
         {
             SetFieldValue(dictionary, fieldPath, fieldValue);
-            
+
             return dictionary;
         }
         /// <summary>
@@ -484,7 +484,7 @@ namespace Arango.Client
                     SetFieldValue(dictionary, fieldPath, fieldValue);
                     break;
             }
-            
+
             return dictionary;
         }
         /// <summary>
@@ -493,7 +493,7 @@ namespace Arango.Client
         public static Dictionary<string, object> List<T>(this Dictionary<string, object> dictionary, string fieldPath, List<T> fieldValue)
         {
             SetFieldValue(dictionary, fieldPath, fieldValue);
-            
+
             return dictionary;
         }
         /// <summary>
@@ -502,20 +502,20 @@ namespace Arango.Client
         public static Dictionary<string, object> Array<T>(this Dictionary<string, object> dictionary, string fieldPath, T[] fieldValue)
         {
             SetFieldValue(dictionary, fieldPath, fieldValue);
-            
+
             return dictionary;
         }
-        
+
         #endregion
-        
+
         #region Field checkers
-        
+
         /// <summary>
         /// Checks if specified field is present within given path.
         /// </summary>
         public static bool Has(this Dictionary<string, object> dictionary, string fieldPath)
         {
-            return HasField(dictionary, fieldPath); 
+            return HasField(dictionary, fieldPath);
         }
         /// <summary>
         /// Checks if specified field has null value.
@@ -523,11 +523,11 @@ namespace Arango.Client
         public static bool IsNull(this Dictionary<string, object> dictionary, string fieldPath)
         {
             var isValid = false;
-            
+
             try
             {
                 var fieldValue = GetFieldValue(dictionary, fieldPath);
-                
+
                 if (fieldValue == null)
                 {
                     isValid = true;
@@ -537,7 +537,7 @@ namespace Arango.Client
             {
                 isValid = false;
             }
-            
+
             return isValid;
         }
         /// <summary>
@@ -546,11 +546,11 @@ namespace Arango.Client
         public static bool IsNotNull(this Dictionary<string, object> dictionary, string fieldPath)
         {
             var isValid = false;
-            
+
             try
             {
                 var fieldValue = GetFieldValue(dictionary, fieldPath);
-                
+
                 if (fieldValue != null)
                 {
                     isValid = true;
@@ -560,7 +560,7 @@ namespace Arango.Client
             {
                 isValid = false;
             }
-            
+
             return isValid;
         }
         /// <summary>
@@ -569,11 +569,11 @@ namespace Arango.Client
         public static bool IsBool(this Dictionary<string, object> dictionary, string fieldPath)
         {
             var isValid = false;
-            
+
             try
             {
                 var fieldValue = GetFieldValue(dictionary, fieldPath);
-                
+
                 if (fieldValue is bool)
                 {
                     isValid = true;
@@ -583,7 +583,7 @@ namespace Arango.Client
             {
                 isValid = false;
             }
-            
+
             return isValid;
         }
         /// <summary>
@@ -592,11 +592,11 @@ namespace Arango.Client
         public static bool IsByte(this Dictionary<string, object> dictionary, string fieldPath)
         {
             var isValid = false;
-            
+
             try
             {
                 var fieldValue = GetFieldValue(dictionary, fieldPath);
-                
+
                 if (fieldValue is byte)
                 {
                     isValid = true;
@@ -606,7 +606,7 @@ namespace Arango.Client
             {
                 isValid = false;
             }
-            
+
             return isValid;
         }
         /// <summary>
@@ -615,11 +615,11 @@ namespace Arango.Client
         public static bool IsShort(this Dictionary<string, object> dictionary, string fieldPath)
         {
             var isValid = false;
-            
+
             try
             {
                 var fieldValue = GetFieldValue(dictionary, fieldPath);
-                
+
                 if (fieldValue is short)
                 {
                     isValid = true;
@@ -629,7 +629,7 @@ namespace Arango.Client
             {
                 isValid = false;
             }
-            
+
             return isValid;
         }
         /// <summary>
@@ -638,11 +638,11 @@ namespace Arango.Client
         public static bool IsInt(this Dictionary<string, object> dictionary, string fieldPath)
         {
             var isValid = false;
-            
+
             try
             {
                 var fieldValue = GetFieldValue(dictionary, fieldPath);
-                
+
                 if (fieldValue is int)
                 {
                     isValid = true;
@@ -652,7 +652,7 @@ namespace Arango.Client
             {
                 isValid = false;
             }
-            
+
             return isValid;
         }
         /// <summary>
@@ -661,11 +661,11 @@ namespace Arango.Client
         public static bool IsLong(this Dictionary<string, object> dictionary, string fieldPath)
         {
             var isValid = false;
-            
+
             try
             {
                 var fieldValue = GetFieldValue(dictionary, fieldPath);
-                
+
                 if (fieldValue is long)
                 {
                     isValid = true;
@@ -675,7 +675,7 @@ namespace Arango.Client
             {
                 isValid = false;
             }
-            
+
             return isValid;
         }
         /// <summary>
@@ -684,11 +684,11 @@ namespace Arango.Client
         public static bool IsFloat(this Dictionary<string, object> dictionary, string fieldPath)
         {
             var isValid = false;
-            
+
             try
             {
                 var fieldValue = GetFieldValue(dictionary, fieldPath);
-                
+
                 if (fieldValue is float)
                 {
                     isValid = true;
@@ -698,7 +698,7 @@ namespace Arango.Client
             {
                 isValid = false;
             }
-            
+
             return isValid;
         }
         /// <summary>
@@ -707,11 +707,11 @@ namespace Arango.Client
         public static bool IsDouble(this Dictionary<string, object> dictionary, string fieldPath)
         {
             var isValid = false;
-            
+
             try
             {
                 var fieldValue = GetFieldValue(dictionary, fieldPath);
-                
+
                 if (fieldValue is double)
                 {
                     isValid = true;
@@ -721,7 +721,7 @@ namespace Arango.Client
             {
                 isValid = false;
             }
-            
+
             return isValid;
         }
         /// <summary>
@@ -730,11 +730,11 @@ namespace Arango.Client
         public static bool IsDecimal(this Dictionary<string, object> dictionary, string fieldPath)
         {
             var isValid = false;
-            
+
             try
             {
                 var fieldValue = GetFieldValue(dictionary, fieldPath);
-                
+
                 if (fieldValue is decimal)
                 {
                     isValid = true;
@@ -744,7 +744,7 @@ namespace Arango.Client
             {
                 isValid = false;
             }
-            
+
             return isValid;
         }
         /// <summary>
@@ -760,18 +760,18 @@ namespace Arango.Client
         public static bool IsDateTime(this Dictionary<string, object> dictionary, string fieldPath, DateTimeFormat dateTimeFormat)
         {
             var isValid = false;
-            
+
             try
             {
                 var fieldValue = GetFieldValue(dictionary, fieldPath);
-                
+
                 switch (dateTimeFormat)
                 {
                     case DateTimeFormat.String:
                         if (fieldValue is string)
                         {
                             var dateTime = System.DateTime.Parse((string)fieldValue, DateTimeFormatInfo.InvariantInfo, DateTimeStyles.AdjustToUniversal);
-                            
+
                             isValid = true;
                         }
                         break;
@@ -779,7 +779,7 @@ namespace Arango.Client
                         if (fieldValue is long)
                         {
                             var dateTime = Dictator.Settings.UnixEpoch.AddSeconds((long)fieldValue);
-                            
+
                             isValid = true;
                         }
                         break;
@@ -795,7 +795,7 @@ namespace Arango.Client
             {
                 isValid = false;
             }
-            
+
             return isValid;
         }
         /// <summary>
@@ -804,11 +804,11 @@ namespace Arango.Client
         public static bool IsGuid(this Dictionary<string, object> dictionary, string fieldPath)
         {
             var isValid = false;
-            
+
             try
             {
                 var fieldValue = GetFieldValue(dictionary, fieldPath);
-                
+
                 if (fieldValue is Guid)
                 {
                     isValid = true;
@@ -818,7 +818,7 @@ namespace Arango.Client
             {
                 isValid = false;
             }
-            
+
             return isValid;
         }
         /// <summary>
@@ -827,11 +827,11 @@ namespace Arango.Client
         public static bool IsString(this Dictionary<string, object> dictionary, string fieldPath)
         {
             var isValid = false;
-            
+
             try
             {
                 var fieldValue = GetFieldValue(dictionary, fieldPath);
-                
+
                 if (fieldValue is string)
                 {
                     isValid = true;
@@ -841,7 +841,7 @@ namespace Arango.Client
             {
                 isValid = false;
             }
-            
+
             return isValid;
         }
         /// <summary>
@@ -850,11 +850,11 @@ namespace Arango.Client
         public static bool IsObject(this Dictionary<string, object> dictionary, string fieldPath)
         {
             var isValid = false;
-            
+
             try
             {
                 var fieldValue = GetFieldValue(dictionary, fieldPath);
-                
+
                 if (fieldValue != null)
                 {
                     isValid = true;
@@ -864,7 +864,7 @@ namespace Arango.Client
             {
                 isValid = false;
             }
-            
+
             return isValid;
         }
         /// <summary>
@@ -873,11 +873,11 @@ namespace Arango.Client
         public static bool IsDocument(this Dictionary<string, object> dictionary, string fieldPath)
         {
             var isValid = false;
-            
+
             try
             {
                 var fieldValue = GetFieldValue(dictionary, fieldPath);
-                
+
                 if (fieldValue is Dictionary<string, object>)
                 {
                     isValid = true;
@@ -887,7 +887,7 @@ namespace Arango.Client
             {
                 isValid = false;
             }
-            
+
             return isValid;
         }
         /// <summary>
@@ -896,11 +896,11 @@ namespace Arango.Client
         public static bool IsEnum(this Dictionary<string, object> dictionary, string fieldPath)
         {
             var isValid = false;
-            
+
             try
             {
                 var fieldValue = GetFieldValue(dictionary, fieldPath);
-            
+
                 if (fieldValue.GetType().IsEnum)
                 {
                     isValid = true;
@@ -910,7 +910,7 @@ namespace Arango.Client
             {
                 isValid = false;
             }
-            
+
             return isValid;
         }
         /// <summary>
@@ -920,13 +920,13 @@ namespace Arango.Client
         public static bool IsEnum<T>(this Dictionary<string, object> dictionary, string fieldPath)
         {
             var isValid = false;
-            
+
             try
             {
                 var fieldValue = GetFieldValue(dictionary, fieldPath);
                 var type = typeof(T);
                 T fieldEnum;
-            
+
                 if (fieldValue is Enum)
                 {
                     fieldEnum = (T)fieldValue;
@@ -947,7 +947,7 @@ namespace Arango.Client
             {
                 isValid = false;
             }
-            
+
             return isValid;
         }
         /// <summary>
@@ -956,11 +956,11 @@ namespace Arango.Client
         public static bool IsList(this Dictionary<string, object> dictionary, string fieldPath)
         {
             var isValid = false;
-            
+
             try
             {
                 var fieldValue = GetFieldValue(dictionary, fieldPath);
-            
+
                 if (fieldValue.GetType().IsGenericType && (fieldValue is IEnumerable))
                 {
                     isValid = true;
@@ -970,7 +970,7 @@ namespace Arango.Client
             {
                 isValid = false;
             }
-            
+
             return isValid;
         }
         /// <summary>
@@ -979,11 +979,11 @@ namespace Arango.Client
         public static bool IsArray(this Dictionary<string, object> dictionary, string fieldPath)
         {
             var isValid = false;
-            
+
             try
             {
                 var fieldValue = GetFieldValue(dictionary, fieldPath);
-            
+
                 if (fieldValue.GetType().IsArray)
                 {
                     isValid = true;
@@ -993,7 +993,7 @@ namespace Arango.Client
             {
                 isValid = false;
             }
-            
+
             return isValid;
         }
         /// <summary>
@@ -1002,15 +1002,15 @@ namespace Arango.Client
         public static bool IsType(this Dictionary<string, object> dictionary, string fieldPath, Type type)
         {
             var isValid = false;
-            
+
             try
             {
                 var fieldValue = GetFieldValue(dictionary, fieldPath);
-                
+
                 if (fieldValue != null)
                 {
                     var fieldType = fieldValue.GetType();
-                    
+
                     if (fieldType == type)
                     {
                         isValid = true;
@@ -1021,7 +1021,7 @@ namespace Arango.Client
             {
                 isValid = false;
             }
-            
+
             return isValid;
         }
         /// <summary>
@@ -1037,11 +1037,11 @@ namespace Arango.Client
         public static bool IsInteger(this Dictionary<string, object> dictionary, string fieldPath)
         {
             var isValid = false;
-            
+
             try
             {
                 var fieldValue = GetFieldValue(dictionary, fieldPath);
-                
+
                 if (fieldValue != null)
                 {
                     if ((fieldValue is byte) ||
@@ -1061,7 +1061,7 @@ namespace Arango.Client
             {
                 isValid = false;
             }
-            
+
             return isValid;
         }
         /// <summary>
@@ -1070,11 +1070,11 @@ namespace Arango.Client
         public static bool IsEqual(this Dictionary<string, object> dictionary, string fieldPath, object compareValue)
         {
             var isValid = false;
-            
+
             try
             {
                 var fieldValue = GetFieldValue(dictionary, fieldPath);
-                
+
                 if ((fieldValue == null) && (compareValue == null))
                 {
                     isValid = true;
@@ -1091,10 +1091,10 @@ namespace Arango.Client
             {
                 isValid = false;
             }
-            
+
             return isValid;
         }
-        
+
         #endregion
 
         /// <summary>
@@ -1103,7 +1103,7 @@ namespace Arango.Client
         public static Dictionary<string, object> Each(this Dictionary<string, object> dictionary, string fieldPath, Action<int, Dictionary<string, object>> action)
         {
             var fieldValue = GetFieldValue(dictionary, fieldPath);
-            
+
             if (fieldValue is IList)
             {
                 for (int i = 0; i < ((IList)fieldValue).Count; i++)
@@ -1112,49 +1112,49 @@ namespace Arango.Client
                     {
                         action(i, (Dictionary<string, object>)((IList)fieldValue)[i]);
                     }
-                } 
+                }
             }
-            
+
             return dictionary;
         }
-        
+
         /// <summary>
         /// Iterates over items from specified field path and performs given action.
         /// </summary>
         public static Dictionary<string, object> Each<T>(this Dictionary<string, object> dictionary, string fieldPath, Action<int, T> action)
         {
             var fieldValue = GetFieldValue(dictionary, fieldPath);
-            
+
             if (fieldValue is IList)
             {
                 for (int i = 0; i < ((IList)fieldValue).Count; i++)
                 {
                     action(i, (T)((IList)fieldValue)[i]);
-                } 
+                }
             }
-            
+
             return dictionary;
         }
-        
+
         /// <summary>
         /// Creates a deep clone of current dictionary.
         /// </summary>
         public static Dictionary<string, object> Clone(this Dictionary<string, object> dictionary)
         {
             var clone = new Dictionary<string, object>();
-            
+
             foreach (var field in dictionary)
             {
                 // null value is a special case so it should be processed first
                 if (field.Value == null)
                 {
                     clone.Add(field.Key, null);
-                    
+
                     continue;
                 }
-                
+
                 var fieldType = field.Value.GetType();
-                
+
                 if (fieldType.IsValueType || fieldType.IsEnum || fieldType.Equals(typeof(System.String)))
                 {
                     clone.Add(field.Key, field.Value);
@@ -1168,7 +1168,7 @@ namespace Arango.Client
                     clone.Add(field.Key, Activator.CreateInstance(fieldType, new object[] { field.Value }));
                 }
             }
-            
+
             return clone;
         }
         /// <summary>
@@ -1177,12 +1177,12 @@ namespace Arango.Client
         public static Dictionary<string, object> CloneExcept(this Dictionary<string, object> dictionary, params string[] fieldPaths)
         {
             var clone = Clone(dictionary);
-            
+
             foreach (var fieldPath in fieldPaths)
             {
                 clone.Drop(fieldPath);
             }
-            
+
             return clone;
         }
         /// <summary>
@@ -1191,14 +1191,14 @@ namespace Arango.Client
         public static Dictionary<string, object> CloneOnly(this Dictionary<string, object> dictionary, params string[] fieldPaths)
         {
             var clone = new Dictionary<string, object>();
-            
+
             foreach (var fieldPath in fieldPaths)
             {
                 try
                 {
                     var fieldValue = GetFieldValue(dictionary, fieldPath);
                     var fieldType = fieldValue.GetType();
-                    
+
                     if (fieldType.IsValueType || fieldType.IsEnum || fieldType.Equals(typeof(System.String)))
                     {
                         clone.Object(fieldPath, fieldValue);
@@ -1216,7 +1216,7 @@ namespace Arango.Client
                 {
                 }
             }
-            
+
             return clone;
         }
         /// <summary>
@@ -1226,15 +1226,15 @@ namespace Arango.Client
         {
             foreach (var fieldPath in fieldPaths)
             {
-                var fieldNames = new [] { fieldPath };
-                var parentDictionary = dictionary;                
-                
+                var fieldNames = new[] { fieldPath };
+                var parentDictionary = dictionary;
+
                 // split field path to separate field name elements if necessary
                 if (fieldPath.Contains("."))
                 {
                     fieldNames = fieldPath.Split('.');
                 }
-                
+
                 for (int i = 0; i < fieldNames.Length; i++)
                 {
                     var fieldName = fieldNames[i];
@@ -1244,27 +1244,27 @@ namespace Arango.Client
                     {
                         var firstIndex = fieldName.IndexOf('[');
                         var lastIndex = fieldName.IndexOf(']');
-                        
+
                         arrayContent = fieldName.Substring(firstIndex + 1, lastIndex - firstIndex - 1);
                         fieldName = fieldName.Substring(0, firstIndex);
                     }
-    
+
                     // field is not present in dictionary - next field path iteration
                     if (!parentDictionary.ContainsKey(fieldName))
                     {
                         break;
                     }
-    
+
                     // current field name is final - drop field
                     if (i == (fieldNames.Length - 1))
-                    {                       
+                    {
                         parentDictionary.Remove(fieldName);
-                        
+
                         break;
                     }
-                    
+
                     var tempParentObject = GetFieldObject(fieldName, arrayContent, parentDictionary);
-                
+
                     // descendant field is dictionary - set is as current parent dictionary
                     if (tempParentObject is Dictionary<string, object>)
                     {
@@ -1275,9 +1275,9 @@ namespace Arango.Client
                     {
                         break;
                     }
-                } 
+                }
             }
-            
+
             return dictionary;
         }
         /// <summary>
@@ -1286,7 +1286,7 @@ namespace Arango.Client
         public static Dictionary<string, object> Merge(this Dictionary<string, object> dictionary, Dictionary<string, object> document)
         {
             dictionary.Merge(document, Dictator.Settings.MergeBehavior);
-            
+
             return dictionary;
         }
         /// <summary>
@@ -1310,7 +1310,7 @@ namespace Arango.Client
                         break;
                 }
             }
-            
+
             return dictionary;
         }
         /// <summary>
@@ -1320,14 +1320,14 @@ namespace Arango.Client
         {
             return (T)ConvertToObject(dictionary, typeof(T));
         }
-        
+
         #region Private methods
-        
+
         /// <summary>
         ///  Checks if specified field is present in dictionary.
         /// </summary>
         // TODO: can this be refactored with GetFieldValue method?
-        static bool HasField(Dictionary<string, object> dictionary, string fieldPath)
+        private static bool HasField(Dictionary<string, object> dictionary, string fieldPath)
         {
             object fieldValue = null;
             var fieldNames = new[] { fieldPath };
@@ -1383,24 +1383,24 @@ namespace Arango.Client
 
             return true;
         }
-        
+
         /// <summary>
         /// Retrieves value from specified field path.
         /// </summary>
         /// <exception cref="NonExistingFieldException">Field does not exist in specified path.</exception>
         /// <exception cref="InvalidFieldException">Field path contains field which is not traversable.</exception>
-        static object GetFieldValue(Dictionary<string, object> dictionary, string fieldPath)
+        private static object GetFieldValue(Dictionary<string, object> dictionary, string fieldPath)
         {
             object fieldValue = null;
-            var fieldNames = new [] { fieldPath };
-            var parentDictionary = dictionary;                
-            
+            var fieldNames = new[] { fieldPath };
+            var parentDictionary = dictionary;
+
             // split field path to separate field name elements if necessary
             if (fieldPath.Contains("."))
             {
                 fieldNames = fieldPath.Split('.');
             }
-            
+
             for (int i = 0; i < fieldNames.Length; i++)
             {
                 var fieldName = fieldNames[i];
@@ -1410,11 +1410,11 @@ namespace Arango.Client
                 {
                     var firstIndex = fieldName.IndexOf('[');
                     var lastIndex = fieldName.IndexOf(']');
-                    
+
                     arrayContent = fieldName.Substring(firstIndex + 1, lastIndex - firstIndex - 1);
                     fieldName = fieldName.Substring(0, firstIndex);
                 }
-                
+
                 // throw exception if the field is not present in dictionary
                 if (!parentDictionary.ContainsKey(fieldName))
                 {
@@ -1425,13 +1425,13 @@ namespace Arango.Client
                 if (i == (fieldNames.Length - 1))
                 {
                     fieldValue = GetFieldObject(fieldName, arrayContent, parentDictionary);
-                    
+
                     break;
                 }
-                
+
                 var tempParentObject = GetFieldObject(fieldName, arrayContent, parentDictionary);
-                
-                 // descendant field is dictionary - set is as current parent dictionary
+
+                // descendant field is dictionary - set is as current parent dictionary
                 if (tempParentObject is Dictionary<string, object>)
                 {
                     parentDictionary = (Dictionary<string, object>)tempParentObject;
@@ -1442,48 +1442,50 @@ namespace Arango.Client
                     throw new InvalidFieldException(string.Format("Field path '{0}' contains field '{1}' which is not dictionary.", fieldPath, fieldName));
                 }
             }
-            
+
             return fieldValue;
         }
+
         /// <summary>
         /// Retrieves object from specified field depending on array content.
         /// </summary>
         /// <exception cref="IndexOutOfRangeException">Index in field specified field is out of range.</exception>
-        static object GetFieldObject(string fieldName, string arrayContent, Dictionary<string, object> fieldDocument)
+        private static object GetFieldObject(string fieldName, string arrayContent, Dictionary<string, object> fieldDocument)
         {
             if (!string.IsNullOrEmpty(arrayContent))
             {
                 int indexNumber;
-                
+
                 if (int.TryParse(arrayContent, out indexNumber))
                 {
                     var collection = ((IList)fieldDocument[fieldName]);
-                    
+
                     if ((indexNumber >= 0) && ((indexNumber + 1) <= collection.Count))
                     {
                         return collection[indexNumber];
                     }
-                    
+
                     throw new IndexOutOfRangeException("Index in field '" + fieldName + "' is out of range.");
                 }
             }
-            
+
             return fieldDocument[fieldName];
         }
+
         /// <summary>
         /// Stores given value to specified field path.
         /// </summary>
-        static void SetFieldValue(Dictionary<string, object> dictionary, string fieldPath, object fieldValue)
+        private static void SetFieldValue(Dictionary<string, object> dictionary, string fieldPath, object fieldValue)
         {
-            var fieldNames = new [] { fieldPath };
+            var fieldNames = new[] { fieldPath };
             var parentDictionary = dictionary;
-            
+
             // split field path to separate field name elements if necessary
             if (fieldPath.Contains("."))
             {
                 fieldNames = fieldPath.Split('.');
             }
-            
+
             for (int i = 0; i < fieldNames.Length; i++)
             {
                 var fieldName = fieldNames[i];
@@ -1493,23 +1495,23 @@ namespace Arango.Client
                 {
                     var firstIndex = fieldName.IndexOf('[');
                     var lastIndex = fieldName.IndexOf(']');
-                    
+
                     arrayContent = fieldName.Substring(firstIndex + 1, lastIndex - firstIndex - 1);
                     fieldName = fieldName.Substring(0, firstIndex);
                 }
-                
+
                 // current field name is final - set field value and break loop
                 if (i == (fieldNames.Length - 1))
                 {
                     SetFieldObject(fieldName, arrayContent, parentDictionary, fieldValue);
-                    
+
                     break;
                 }
-                
+
                 if (parentDictionary.ContainsKey(fieldName))
                 {
                     var tempParentObject = GetFieldObject(fieldName, arrayContent, parentDictionary);
-                    
+
                     // descendant field is not dictionary - dictionary field needs to be created
                     if (!(tempParentObject is Dictionary<string, object>))
                     {
@@ -1531,16 +1533,17 @@ namespace Arango.Client
                 }
             }
         }
+
         /// <summary>
         /// Stores given value to specified field depending on array content.
         /// </summary>
         /// <exception cref="IndexOutOfRangeException">Index in field specified field is out of range.</exception>
-        static void SetFieldObject(string fieldName, string arrayContent, Dictionary<string, object> fieldDocument, object fieldValue)
+        private static void SetFieldObject(string fieldName, string arrayContent, Dictionary<string, object> fieldDocument, object fieldValue)
         {
             if (!string.IsNullOrEmpty(arrayContent))
             {
                 var collection = ((IList)fieldDocument[fieldName]);
-                
+
                 // append value to collection
                 if (arrayContent == "*")
                 {
@@ -1550,7 +1553,7 @@ namespace Arango.Client
                 else
                 {
                     int indexNumber;
-                    
+
                     if (int.TryParse(arrayContent, out indexNumber))
                     {
                         if ((indexNumber >= 0) && ((indexNumber + 1) <= collection.Count))
@@ -1570,13 +1573,14 @@ namespace Arango.Client
                 fieldDocument[fieldName] = fieldValue;
             }
         }
+
         /// <summary>
         /// Converts specified dictionary into strongly typed object.
         /// </summary>
-        static object ConvertToObject(Dictionary<string, object> dictionary, Type objectType)
+        private static object ConvertToObject(Dictionary<string, object> dictionary, Type objectType)
         {
             var stronglyTypedObject = Activator.CreateInstance(objectType);
-            
+
             if (objectType == typeof(Dictionary<string, object>))
             {
                 foreach (var item in dictionary)
@@ -1593,23 +1597,23 @@ namespace Arango.Client
                     {
                         continue;
                     }
-                    
+
                     var fieldName = propertyInfo.Name;
                     object fieldValue = null;
                     Type fieldType = null;
-                    
+
                     // set field name to property alias if present
                     if (propertyInfo.IsDefined(typeof(AliasField)))
                     {
                         var aliasFieldAttribute = (AliasField)propertyInfo.GetCustomAttribute(typeof(AliasField));
-                        
+
                         fieldName = aliasFieldAttribute.Alias;
                     }
-                    
+
                     if (dictionary.Has(fieldName))
                     {
                         fieldValue = GetFieldValue(dictionary, fieldName);
-                        
+
                         if (fieldValue != null)
                         {
                             fieldType = fieldValue.GetType();
@@ -1627,14 +1631,14 @@ namespace Arango.Client
                     {
                         continue;
                     }
-                    
+
                     if (propertyInfo.PropertyType == typeof(Dictionary<string, object>))
                     {
                         propertyInfo.SetValue(stronglyTypedObject, ConvertToObject((Dictionary<string, object>)fieldValue, propertyInfo.PropertyType), null);
                     }
                     // property is a collection
                     else if ((propertyInfo.PropertyType.IsArray || propertyInfo.PropertyType.IsGenericType) && (fieldValue is IList))
-                    {  
+                    {
                         propertyInfo.SetValue(
                             stronglyTypedObject,
                             ConvertToCollection((IList)fieldValue, propertyInfo.PropertyType),
@@ -1647,9 +1651,15 @@ namespace Arango.Client
                         if (fieldType == typeof(Dictionary<string, object>))
                         {
                             var instance = Activator.CreateInstance(propertyInfo.PropertyType);
-                            
+
                             propertyInfo.SetValue(stronglyTypedObject, ConvertToObject((Dictionary<string, object>)fieldValue, propertyInfo.PropertyType), null);
                         }
+                        //else if (fieldValue != null)
+                        //{
+                        //    //handling f# strings
+                        //    //var instance = Activator.CreateInstance(propertyInfo.PropertyType, new object[] {fieldValue});
+                        //    propertyInfo.SetValue(stronglyTypedObject, ConvertToObject((Dictionary<string, object>)fieldValue, propertyInfo.PropertyType), null);
+                        //}
                         else
                         {
                             propertyInfo.SetValue(stronglyTypedObject, fieldValue, null);
@@ -1709,7 +1719,7 @@ namespace Arango.Client
                         if ((fieldValue == null) || (propertyInfo.PropertyType == fieldType))
                         {
                             propertyInfo.SetValue(stronglyTypedObject, fieldValue, null);
-                        } 
+                        }
                         else
                         {
                             propertyInfo.SetValue(stronglyTypedObject, Convert.ChangeType(fieldValue, propertyInfo.PropertyType), null);
@@ -1717,13 +1727,14 @@ namespace Arango.Client
                     }
                 }
             }
-            
+
             return stronglyTypedObject;
         }
+
         /// <summary>
         /// Converts specified object into collection of items of specified type.
         /// </summary>
-        static object ConvertToCollection(IList collection, Type collectionType)
+        private static object ConvertToCollection(IList collection, Type collectionType)
         {
             if (collection == null)
             {
@@ -1732,10 +1743,10 @@ namespace Arango.Client
 
             // create instance of property type
             var collectionInstance = Activator.CreateInstance(collectionType, collection.Count);
-            
+
             // get type of items within collection
             Type collectionElementType;
-            
+
             if (collectionType.IsArray)
             {
                 collectionElementType = collectionType.GetElementType();
@@ -1744,15 +1755,15 @@ namespace Arango.Client
             {
                 collectionElementType = collectionType.GetGenericArguments()[0];
             }
-            
+
             if (collection.Count > 0)
             {
                 // TODO: move type inference and processing out of the loop for performance reasons
-                
+
                 for (int i = 0; i < collection.Count; i++)
                 {
                     var elementType = collection[i].GetType();
-                    
+
                     // collection is simple array
                     if (collectionType.IsArray)
                     {
@@ -1791,10 +1802,10 @@ namespace Arango.Client
                             {
                                 var element = (Dictionary<string, object>)collection[i];
                                 var addMethod = collectionType.GetMethod("Add");
-                                
+
                                 addMethod.Invoke(
-                                    collectionInstance, 
-                                    new [] { 
+                                    collectionInstance,
+                                    new[] {
                                         Convert.ChangeType(element["k"], collectionType.GetGenericArguments()[0]),
                                         Convert.ChangeType(element["v"], collectionType.GetGenericArguments()[1])
                                     }
@@ -1809,7 +1820,7 @@ namespace Arango.Client
                                 if (elementType == collectionType.GetGenericArguments()[0])
                                 {
                                     ((IList)collectionInstance).Add(collection[i]);
-                                } 
+                                }
                                 else
                                 {
                                     ((IList)collectionInstance).Add(Convert.ChangeType(collection[i], collectionType));
@@ -1825,10 +1836,10 @@ namespace Arango.Client
                     }
                 }
             }
-            
+
             return collectionInstance;
         }
-        
+
         #endregion
     }
 }
