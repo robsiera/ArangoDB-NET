@@ -1,6 +1,9 @@
 ﻿using Arango.Client.Protocol;
 using Arango.fastJSON;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace Arango.Client
@@ -81,6 +84,31 @@ namespace Arango.Client
             return _Connections.ContainsKey(alias);
         }
 
+        /// <summary>
+        /// Get the name of the database specified in an specific Connection
+        /// </summary>
+        public static string GetConnectionDbName(string alias)
+        {
+            if (HasConnection(alias))
+            {
+                var conn = GetConnection(alias);
+                return conn.DatabaseName;
+            }
+            else
+            {
+                throw new ArgumentOutOfRangeException($"No Connection found with the name {alias}");
+            }
+        }
+
+        public static string GetDefaultConnectionDbName()
+        {
+            if (_Connections.Count == 0)
+                throw new ArgumentOutOfRangeException($"No Connections found");
+
+            var (_, value) = _Connections.FirstOrDefault();
+            return value.DatabaseName;
+        }
+
         internal static Connection GetConnection(string alias)
         {
             if (_Connections.ContainsKey(alias))
@@ -88,6 +116,7 @@ namespace Arango.Client
                 return _Connections[alias];
             }
 
+            Debugger.Break();
             return null;
         }
     }
