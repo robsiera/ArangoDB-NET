@@ -437,6 +437,8 @@ namespace Arango.fastJSON
             }
             else if (conversionType == typeof(long))
             {
+                if (value == null)
+                    return 0;
                 string s = value as string;
                 if (s == null)
                     return (long)value;
