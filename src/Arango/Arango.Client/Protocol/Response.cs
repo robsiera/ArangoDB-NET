@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Linq;
 using System.Net;
 using Arango.fastJSON;
 
 namespace Arango.Client.Protocol
 {
-    internal class Response
+    internal sealed class Response
     {
         internal int StatusCode { get; set; }
         internal WebHeaderCollection Headers { get; set; }
