@@ -1,5 +1,6 @@
 ﻿using System;﻿
 using System.Collections.Generic;
+using System.Diagnostics;
 using Arango.Client.Protocol;
 using Arango.fastJSON;
 
@@ -12,6 +13,9 @@ namespace Arango.Client
         
         internal ADocument(Connection connection)
         {
+            if(connection==null)
+                Debugger.Break();
+
             _connection = connection;
         }
         
