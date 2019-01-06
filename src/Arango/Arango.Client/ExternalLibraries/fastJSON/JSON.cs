@@ -806,7 +806,15 @@ namespace Arango.fastJSON
                                 break;
                         }
 
-                        o = pi.setter(o, oset);
+                        try
+                        {
+                            o = pi.setter(o, oset);
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine(e);
+                            throw new Exception($"Failed to set {oset.ToString()}", e);
+                        }
                     }
                 }
             }
