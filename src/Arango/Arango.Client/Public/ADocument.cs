@@ -110,10 +110,50 @@ namespace Arango.Client
         #endregion
 
         #region Create (POST)
+        public AResult<T> CreateObject<T>(string collectionName, T obj)
+        {
+            return CreateObject<T>(collectionName, JSON.ToJSON(obj, ASettings.JsonParameters));
+        }
+
+        public AResult<T> CreateObject<T>(string collectionName, string json)
+        {
+            var request = new Request(HttpMethod.POST, ApiBaseUri.Document, "/" + collectionName);
+
+            // optional
+            request.TrySetQueryStringParameter(ParameterName.WaitForSync, _parameters);
+            // optional
+            request.TrySetQueryStringParameter(ParameterName.ReturnNew, _parameters);
+
+            request.Body = json;
+
+            var response = _connection.Send(request);
+            var result = new AResult<T>(response);
+
+            switch (response.StatusCode)
+            {
+                case 201:
+                case 202:
+                    var body = response.ParseBody<T>();
+
+                    result.Success = (body != null);
+                    result.Value = body;
+                    break;
+                case 400:
+                case 404:
+                default:
+                    // Arango error
+                    break;
+            }
+
+            _parameters.Clear();
+
+            return result;
+        }
 
         /// <summary>
         /// Creates new document within specified collection in current database context.
         /// </summary>
+        [Obsolete("Consider using .. 2019/01")]
         public AResult<Dictionary<string, object>> Create(string collectionName, string json)
         {
             var request = new Request(HttpMethod.POST, ApiBaseUri.Document, "/" + collectionName);
@@ -148,10 +188,11 @@ namespace Arango.Client
             
             return result;
         }
-        
+
         /// <summary>
         /// Creates new document within specified collection in current database context.
         /// </summary>
+        [Obsolete("Consider using .. 2019/01")]
         public AResult<Dictionary<string, object>> Create(string collectionName, Dictionary<string, object> document)
         {
             return Create(collectionName, JSON.ToJSON(document, ASettings.JsonParameters));
@@ -162,7 +203,11 @@ namespace Arango.Client
         /// </summary>
         public AResult<Dictionary<string, object>> Create<T>(string collectionName, T obj)
         {
+            // TODO why is this line in comments? Find out in github repo if possible.
+
             //return Create(collectionName, JSON.ToJSON(DictionaryExtensions.StripObject(obj), ASettings.JsonParameters));
+
+            // TODO better to parse directly to JSON, otherwise all three overloads of Create will be called, parsing from object -> dictionary -> json. Parsing directly object -> json will be faster + dictator doesn't handle edgecases as well as fastJSON.
             return Create(collectionName, Dictator.ToDocument(obj));
         }
 
