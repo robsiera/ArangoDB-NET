@@ -62,9 +62,9 @@ namespace Arango.Client
             var inputObjectType = obj.GetType();
             var document = new Dictionary<string, object>();
             
-            if (obj is Dictionary<string, object>)
+            if (obj is Dictionary<string, object> objects)
             {
-                document = (obj as Dictionary<string, object>).Clone();
+                document = objects.Clone();
             }
             else
             {
