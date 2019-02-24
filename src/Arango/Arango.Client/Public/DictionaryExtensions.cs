@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using Dictator;
 
 namespace Arango.Client
 {
     // contains ArangoDB specific extension methods, Dictator implementation code can be found in external libraries
-    public static partial class DictionaryExtensions
+    public static class ArangoDictionaryExtensions
     {
         #region Field _id
-        
+
         /// <summary>
         /// Checks if `_id` field is present and has valid format.
         /// </summary>
@@ -15,18 +16,18 @@ namespace Arango.Client
         {
             return !string.IsNullOrEmpty(ID(dictionary));
         }
-        
+
         /// <summary>
         /// Retrieves value of `_id` field. If the field is missing or has invalid format null value is returned.
         /// </summary>
         public static string ID(this Dictionary<string, object> dictionary)
         {
             string id;
-            
+
             try
             {
-                id = String(dictionary, "_id");
-                
+                id = DictionaryExtensions.String(dictionary, "_id");
+
                 if (!ADocument.IsID(id))
                 {
                     id = null;
@@ -36,10 +37,10 @@ namespace Arango.Client
             {
                 id = null;
             }
-            
+
             return id;
         }
-        
+
         /// <summary>
         /// Stores `_id` field value.
         /// </summary>
@@ -50,16 +51,16 @@ namespace Arango.Client
             {
                 throw new ArgumentException("Specified id value (" + id + ") has invalid format.");
             }
-            
-            SetFieldValue(dictionary, "_id", id);
-            
+
+            DictionaryExtensions.String(dictionary, "_id", id);
+
             return dictionary;
         }
-        
+
         #endregion
-        
+
         #region Field _key
-        
+
         /// <summary>
         /// Checks if `_key` field is present and has valid format.
         /// </summary>
@@ -67,18 +68,18 @@ namespace Arango.Client
         {
             return !string.IsNullOrEmpty(Key(dictionary));
         }
-        
+
         /// <summary>
         /// Retrieves value of `_key` field. If the field is missing or has invalid format null value is returned.
         /// </summary>
         public static string Key(this Dictionary<string, object> dictionary)
         {
             string key;
-            
+
             try
             {
-                key = String(dictionary, "_key");
-                
+                key = DictionaryExtensions.String(dictionary, "_key");
+
                 if (!ADocument.IsKey(key))
                 {
                     key = null;
@@ -88,10 +89,10 @@ namespace Arango.Client
             {
                 key = null;
             }
-            
+
             return key;
         }
-        
+
         /// <summary>
         /// Stores `_key` field value.
         /// </summary>
@@ -102,16 +103,16 @@ namespace Arango.Client
             {
                 throw new ArgumentException("Specified key value (" + key + ") has invalid format.");
             }
-            
-            SetFieldValue(dictionary, "_key", key);
-            
+
+            DictionaryExtensions.String(dictionary, "_key", key);
+
             return dictionary;
         }
-        
+
         #endregion
-        
+
         #region Field _rev
-        
+
         /// <summary>
         /// Checks if `_rev` field is present and has valid format.
         /// </summary>
@@ -119,18 +120,18 @@ namespace Arango.Client
         {
             return !string.IsNullOrEmpty(Rev(dictionary));
         }
-        
+
         /// <summary>
         /// Retrieves value of `_rev` field. If the field is missing or has invalid format null value is returned.
         /// </summary>
         public static string Rev(this Dictionary<string, object> dictionary)
         {
             string rev;
-            
+
             try
             {
-                rev = String(dictionary, "_rev");
-                
+                rev = DictionaryExtensions.String(dictionary, "_rev");
+
                 if (!ADocument.IsRev(rev))
                 {
                     rev = null;
@@ -140,10 +141,10 @@ namespace Arango.Client
             {
                 rev = null;
             }
-            
+
             return rev;
         }
-        
+
         /// <summary>
         /// Stores `_rev` field value.
         /// </summary>
@@ -153,10 +154,10 @@ namespace Arango.Client
             if (!ADocument.IsRev(rev))
             {
                 throw new ArgumentException("Specified rev value (" + rev + ") has invalid format.");
-            }   
-            
-            SetFieldValue(dictionary, "_rev", rev);
-            
+            }
+
+            DictionaryExtensions.String(dictionary, "_rev", rev);
+
             return dictionary;
         }
 
@@ -181,7 +182,7 @@ namespace Arango.Client
 
             try
             {
-                from = String(dictionary, "_from");
+                from = DictionaryExtensions.String(dictionary, "_from");
 
                 if (!ADocument.IsID(from))
                 {
@@ -207,7 +208,7 @@ namespace Arango.Client
                 throw new ArgumentException("Specified id value (" + id + ") has invalid format.");
             }
 
-            SetFieldValue(dictionary, "_from", id);
+            DictionaryExtensions.String(dictionary, "_from", id);
 
             return dictionary;
         }
@@ -233,7 +234,7 @@ namespace Arango.Client
 
             try
             {
-                to = String(dictionary, "_to");
+                to = DictionaryExtensions.String(dictionary, "_to");
 
                 if (!ADocument.IsID(to))
                 {
@@ -259,7 +260,7 @@ namespace Arango.Client
                 throw new ArgumentException("Specified id value (" + id + ") has invalid format.");
             }
 
-            SetFieldValue(dictionary, "_to", id);
+            DictionaryExtensions.String(dictionary, "_to", id);
 
             return dictionary;
         }
@@ -272,11 +273,11 @@ namespace Arango.Client
         public static bool IsID(this Dictionary<string, object> dictionary, string fieldPath)
         {
             var isValid = false;
-            
+
             try
             {
-                var fieldValue = GetFieldValue(dictionary, fieldPath);
-                
+                var fieldValue = DictionaryExtensions.Object(dictionary, fieldPath);
+
                 if (fieldValue is string)
                 {
                     return ADocument.IsID((string)fieldValue);
@@ -286,21 +287,21 @@ namespace Arango.Client
             {
                 isValid = false;
             }
-            
+
             return isValid;
         }
-        
+
         /// <summary>
         /// Checks if specified field path has valid document key value.
         /// </summary>
         public static bool IsKey(this Dictionary<string, object> dictionary, string fieldPath)
         {
             var isValid = false;
-            
+
             try
             {
-                var fieldValue = GetFieldValue(dictionary, fieldPath);
-                
+                var fieldValue = DictionaryExtensions.Object(dictionary, fieldPath);
+
                 if (fieldValue is string)
                 {
                     return ADocument.IsKey((string)fieldValue);
@@ -310,7 +311,7 @@ namespace Arango.Client
             {
                 isValid = false;
             }
-            
+
             return isValid;
         }
     }

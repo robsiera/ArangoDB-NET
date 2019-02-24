@@ -5,9 +5,9 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 
-namespace Arango.Client
+namespace Dictator
 {
-    public static partial class DictionaryExtensions
+    public static class DictionaryExtensions
     {
         #region Field getters
 

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Arango.Client
+namespace Dictator
 {
     /// <summary>
     /// Ignores property during when converting object to or from document format.

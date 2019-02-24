@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Arango.Client
+namespace Dictator
 {
 	public class InvalidFieldException : Exception
 	{

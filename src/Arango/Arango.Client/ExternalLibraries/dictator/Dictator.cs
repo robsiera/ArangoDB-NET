@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace Arango.Client
+namespace Dictator
 {
     public static class Dictator
     {

@@ -10,6 +10,7 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Reflection;
 using Arango.Client;
+using Dictator;
 
 namespace Arango.fastJSON
 {

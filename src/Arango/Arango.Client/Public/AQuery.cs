@@ -4,6 +4,7 @@ using System.Text;
 using Arango.Client.Protocol;
 using Arango.fastJSON;
 using System.Collections;
+using Dictator;
 
 namespace Arango.Client
 {
@@ -51,7 +52,7 @@ namespace Arango.Client
             } 
             else
             {
-                varValue = Dictator.ToDocument(value);
+                varValue = Dictator.Dictator.ToDocument(value);
             }
 
             _bindVars.Object(key, varValue);

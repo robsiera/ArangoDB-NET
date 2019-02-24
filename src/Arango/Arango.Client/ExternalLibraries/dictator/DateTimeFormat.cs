@@ -1,6 +1,6 @@
 ﻿
 
-namespace Arango.Client
+namespace Dictator
 {
     public enum DateTimeFormat
     {

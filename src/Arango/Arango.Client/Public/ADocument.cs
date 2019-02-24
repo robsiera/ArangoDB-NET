@@ -1,6 +1,7 @@
 ﻿using System;﻿
 using System.Collections.Generic;
 using System.Diagnostics;
+using Dictator;
 using Arango.Client.Protocol;
 using Arango.fastJSON;
 
@@ -208,7 +209,7 @@ namespace Arango.Client
             //return Create(collectionName, JSON.ToJSON(DictionaryExtensions.StripObject(obj), ASettings.JsonParameters));
 
             // TODO better to parse directly to JSON, otherwise all three overloads of Create will be called, parsing from object -> dictionary -> json. Parsing directly object -> json will be faster + dictator doesn't handle edgecases as well as fastJSON.
-            return Create(collectionName, Dictator.ToDocument(obj));
+            return Create(collectionName, Dictator.Dictator.ToDocument(obj));
         }
 
         #endregion
@@ -292,7 +293,7 @@ namespace Arango.Client
                 throw new ArgumentException("Specified 'to' value (" + toID + ") has invalid format.");
             }
 
-            return CreateEdge(collectionName, fromID, toID, Dictator.ToDocument(obj));
+            return CreateEdge(collectionName, fromID, toID, Dictator.Dictator.ToDocument(obj));
         }
 
         #endregion
@@ -530,7 +531,7 @@ namespace Arango.Client
         /// </summary>
         public AResult<Dictionary<string, object>> Update<T>(string id, T obj)
         {
-            return Update(id, Dictator.ToDocument(obj));
+            return Update(id, Dictator.Dictator.ToDocument(obj));
         }
         
         #endregion
@@ -607,7 +608,7 @@ namespace Arango.Client
         /// <exception cref="ArgumentException">Specified id value has invalid format.</exception>
         public AResult<Dictionary<string, object>> Replace<T>(string id, T obj)
         {
-            return Replace(id, Dictator.ToDocument(obj));
+            return Replace(id, Dictator.Dictator.ToDocument(obj));
         }
 
         #endregion
@@ -655,7 +656,7 @@ namespace Arango.Client
         /// </summary>
         public AResult<Dictionary<string, object>> ReplaceEdge<T>(string id, string fromID, string toID, T obj)
         {
-            return ReplaceEdge(id, fromID, toID, Dictator.ToDocument(obj));
+            return ReplaceEdge(id, fromID, toID, Dictator.Dictator.ToDocument(obj));
         }
 
         #endregion
