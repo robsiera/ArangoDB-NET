@@ -18,7 +18,7 @@ namespace Arango.Client
         /// String value containing error description.
         /// </summary>
         public string Message { get; set; }
-        
+
         /// <summary>
         /// Exception object with further information about failure.
         /// </summary>
