@@ -24,4 +24,7 @@
   <ItemGroup>
     <Folder Include="Properties\" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Dictator\Dictator.csproj" />
+  </ItemGroup>
 </Project>

@@ -1313,6 +1313,7 @@ namespace Dictator
 
             return dictionary;
         }
+
         /// <summary>
         /// Converts current dictionary into strongly typed object.
         /// </summary>
