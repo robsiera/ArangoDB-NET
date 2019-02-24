@@ -149,8 +149,8 @@ namespace Arango.Client
             
             return documents;
         }
-        
-        static List<object> ToList(object inputCollection)
+
+        private static List<object> ToList(object inputCollection)
         {
             var collectionType = inputCollection.GetType();
             var outputCollection = new List<object>();
