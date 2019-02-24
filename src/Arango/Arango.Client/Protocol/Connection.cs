@@ -21,7 +21,7 @@ namespace Arango.Client.Protocol
         internal string Password { get; set; }
 
         internal bool UseWebProxy { get; set; }
-        
+
         internal Connection(string alias, string endpoint, string username, string password, bool useWebProxy = false)
         {
             Alias = alias;
@@ -59,7 +59,7 @@ namespace Arango.Client.Protocol
             if (!string.IsNullOrEmpty(Username) && (Password != null))
             {
                 httpRequest.Headers.Add(
-                    "Authorization", 
+                    "Authorization",
                     "Basic " + Convert.ToBase64String(Encoding.ASCII.GetBytes(Username + ":" + Password))
                 );
             }
@@ -123,7 +123,7 @@ namespace Arango.Client.Protocol
                                 exceptionReader.Close();
                                 exceptionResponseStream.Close();
                             }
-                            
+
                             response.GetBodyDataType();
                         }
                     }
@@ -134,25 +134,25 @@ namespace Arango.Client.Protocol
                     if (response.BodyType == BodyType.Document)
                     {
                         var body = response.ParseBody<Body<object>>();
-                        
+
                         if ((body != null) && body.Error)
                         {
                             response.Error.StatusCode = body.Code;
                             response.Error.Number = body.ErrorNum;
-                            response.Error.Message = "ArangoDB error: " + body.ErrorMessage;
+                            response.Error.Message = $"ArangoDB error: {body.ErrorMessage} at {requestUriString}";
                         }
                     }
-                    
+
                     if (string.IsNullOrEmpty(response.Error.Message))
                     {
                         response.Error.StatusCode = response.StatusCode;
                         response.Error.Number = 0;
-                        response.Error.Message = "Protocol error: " + webException.Message;
+                        response.Error.Message = $"Protocol error: {webException.Message} at {requestUriString}";
                     }
 
                     if (ASettings.ThrowExceptions)
                     {
-                        var arangoException = new AException(response.Error.Message, response.Error.Exception);
+                        var arangoException = new AException($"{response.Error.Message} at {requestUriString}", response.Error.Exception);
                         arangoException.StatusCode = response.Error.StatusCode;
                         arangoException.Number = response.Error.Number;
 
