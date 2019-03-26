@@ -105,8 +105,8 @@ namespace Arango.Client
             if (_Connections.Count == 0)
                 throw new ArgumentOutOfRangeException($"No Connections found");
 
-            var (_, value) = _Connections.FirstOrDefault();
-            return value.DatabaseName;
+            var conn = _Connections.FirstOrDefault(); 
+            return conn.Value.DatabaseName;
         }
 
         internal static Connection GetConnection(string alias)

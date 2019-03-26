@@ -22,7 +22,8 @@ namespace Arango.Tests.ExceptionTests
             // then
             Assert.IsNotNull(arangoException);
             Assert.AreEqual(400, arangoException.StatusCode);
-            Assert.IsNotNullOrEmpty(arangoException.Message);
+            Assert.IsNotNull(arangoException.Message);
+            Assert.IsNotEmpty(arangoException.Message);
         }
 
         public void Dispose()
