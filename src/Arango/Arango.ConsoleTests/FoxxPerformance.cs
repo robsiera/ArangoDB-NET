@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using Arango.Client;
+using Dictator;
 
 namespace Arango.ConsoleTests
 {
@@ -12,7 +13,7 @@ namespace Arango.ConsoleTests
 
         public void TestPostCall(int iterationCount)
         {
-            var body = Dictator.New()
+            var body = Dictator.Dictator.New()
                 .String("foo", "some string");
 
             /*_stopWatch.Start();

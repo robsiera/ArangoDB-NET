@@ -105,7 +105,7 @@ namespace Arango.Client
             if (_Connections.Count == 0)
                 throw new ArgumentOutOfRangeException($"No Connections found");
 
-            var (_, value) = _Connections.FirstOrDefault();
+            var value = _Connections.FirstOrDefault().Value;
             return value.DatabaseName;
         }
 

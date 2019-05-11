@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using NUnit.Framework;
 using Arango.Client;
+using Dictator;
 
 namespace Arango.Tests
 {
@@ -23,7 +24,7 @@ namespace Arango.Tests
         {
             var db = new ADatabase(Database.SystemAlias);
 
-            var body = Dictator.New()
+            var body = Dictator.Dictator.New()
                 .String("foo", "some string");
 
             var postResult = db.Foxx

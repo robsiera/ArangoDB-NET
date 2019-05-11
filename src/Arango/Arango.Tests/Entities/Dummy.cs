@@ -1,4 +1,5 @@
 ﻿using Arango.Client;
+using Dictator;
 
 namespace Arango.Tests
 {

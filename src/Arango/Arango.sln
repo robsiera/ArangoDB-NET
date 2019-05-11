@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Arango.Client", "Arango.Cli
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Arango.ConsoleTests", "Arango.ConsoleTests\Arango.ConsoleTests.csproj", "{AC5968E4-B3B6-4025-8BA0-789FEB5DF949}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dictator", "..\Dictator\Dictator.csproj", "{19F84BB3-A8DD-43F8-92D9-F5E561085E8F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{AC5968E4-B3B6-4025-8BA0-789FEB5DF949}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AC5968E4-B3B6-4025-8BA0-789FEB5DF949}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AC5968E4-B3B6-4025-8BA0-789FEB5DF949}.Release|Any CPU.Build.0 = Release|Any CPU
+		{19F84BB3-A8DD-43F8-92D9-F5E561085E8F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{19F84BB3-A8DD-43F8-92D9-F5E561085E8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{19F84BB3-A8DD-43F8-92D9-F5E561085E8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{19F84BB3-A8DD-43F8-92D9-F5E561085E8F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
